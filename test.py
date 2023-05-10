@@ -117,7 +117,7 @@ class FirstPage(tk.Frame):
             if name=="":
                 code.insert(0, "Nom d'utilisateur")
 
-        code = tk.Entry(frame, width=25, fg="black", border=0, bg="white", font=("Microsoft YaHei UI Light", 11))
+        code = tk.Entry(frame, width=25, fg="black", border=0, bg="white", font=("Microsoft YaHei UI Light", 11), show="*")
         code.place(x=30, y=150)
         code.insert(0, "Mot de passe")
         code.bind('<FocusIn>', on_enter)
@@ -144,10 +144,6 @@ class FirstPage(tk.Frame):
 
 
         tk.Button(frame, width=39, pady=7, text="Se connecter", bg="#57a1f8", fg="white", border=0, command=login).place(x=35, y=204)
-
-        ################
-        sign_up = tk.Button(frame, width=6, text="Incrire", border=0, bg="white", cursor="hand2", fg="#57a1f8")
-        sign_up.place(x=215, y=270)
         
 class SecondPage(tk.Frame):
     def __init__(self, parent, controller):
