@@ -8,9 +8,81 @@ from tkinter import messagebox
 from PIL import Image, ImageTk  # pip install pillow
 from tkinter.filedialog import askopenfile
 from tkinter import filedialog
-from Cryptodome.Cipher import AES
+from Cryptodome.Cipher import AES, DES
 from Cryptodome.Util import Padding
 
+########### AES
+def encryptFileAesSha224(password, IV, filename):
+    key = hashlib.sha224(password.encode()).digest()
+
+    with open(filename, 'rb') as f:
+        file_data = f.read()
+
+    starttime = timeit.default_timer()
+
+    cipher = AES.new(key, AES.MODE_CBC , IV)
+    padded_file_data = Padding.pad(file_data, 16)
+    encrypt_file_data = cipher.encrypt(padded_file_data)
+
+    time = timeit.default_timer() - starttime
+
+    with open(filename, 'wb') as ef:
+        ef.write(encrypt_file_data)
+    return 'Done in' + str(time) + 'second(s)'
+
+def decryptFileAesSha224(password, IV, filename):
+    key = hashlib.sha224(password.encode()).digest()
+
+    with open(filename, 'rb') as f:
+        file_data = f.read()
+
+    starttime = timeit.default_timer()
+
+    cipher = AES.new(key, AES.MODE_CBC , IV)
+    padded_file_data = Padding.unpad(file_data, 16)
+    decrypt_file_data = cipher.decrypt(padded_file_data)
+
+    time = timeit.default_timer() - starttime
+
+    with open(filename, 'wb') as ef:
+        ef.write(decrypt_file_data)
+    return 'Done in' + str(time) + 'second(s)'
+
+def encryptFileAesSha512(password, IV, filename):
+    key = hashlib.sha512(password.encode()).digest()
+
+    with open(filename, 'rb') as f:
+        file_data = f.read()
+
+    starttime = timeit.default_timer()
+
+    cipher = AES.new(key, AES.MODE_CBC , IV)
+    padded_file_data = Padding.pad(file_data, 16)
+    encrypt_file_data = cipher.encrypt(padded_file_data)
+
+    time = timeit.default_timer() - starttime
+
+    with open(filename, 'wb') as ef:
+        ef.write(encrypt_file_data)
+    return 'Done in' + str(time) + 'second(s)'
+
+def decryptFileAesSha512(password, IV, filename):
+    key = hashlib.sha512(password.encode()).digest()
+
+    with open(filename, 'rb') as f:
+        file_data = f.read()
+
+    starttime = timeit.default_timer()
+
+    cipher = AES.new(key, AES.MODE_CBC , IV)
+    padded_file_data = Padding.unpad(file_data, 16)
+    decrypt_file_data = cipher.decrypt(padded_file_data)
+
+    time = timeit.default_timer() - starttime
+
+    with open(filename, 'wb') as ef:
+        ef.write(decrypt_file_data)
+    return 'Done in' + str(time) + 'second(s)'
 
 def encryptFile(password, IV, filename):
     key = hashlib.sha256(password.encode()).digest()
@@ -47,8 +119,46 @@ def decryptFile(password, IV, filename):
     with open(filename, 'wb') as ef:
         ef.write(unpadded_file_data)
     return 'Done in' + str(time) + 'second(s)'
+########### AES
 
+########### DES
+def encryptFileDesSha256(password, IV, filename):
+    key = hashlib.sha256(password.encode()).digest()
 
+    with open(filename, 'rb') as f:
+        file_data = f.read()
+
+    starttime = timeit.default_timer()
+
+    cipher = DES.new(key, DES.MODE_CFB, IV)
+    padded_file_data = Padding.pad(file_data, 16)
+    encrypt_file_data = cipher.encrypt(padded_file_data)
+
+    time = timeit.default_timer() - starttime
+
+    with open(filename, 'wb') as ef:
+        ef.write(encrypt_file_data)
+    return 'Done in' + str(time) + 'second(s)'
+
+def decryptFileDesSha256(password, IV, filename):
+    key = hashlib.sha256(password.encode()).digest()
+
+    with open(filename, 'rb') as f:
+        file_data = f.read()
+
+    starttime = timeit.default_timer()
+
+    cipher = DES.new(key, DES.MODE_CFB, IV)
+    padded_file_data = Padding.unpad(file_data, 16)
+    encrypt_file_data = cipher.decrypt(padded_file_data)
+
+    time = timeit.default_timer() - starttime
+
+    with open(filename, 'wb') as ef:
+        ef.write(encrypt_file_data)
+    return 'Done in' + str(time) + 'second(s)'
+########### DES
+################Login Page
 class FirstPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
