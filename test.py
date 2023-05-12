@@ -232,7 +232,7 @@ class ThirdPage(tk.Frame):
         file_direct=tk.Label(self,textvariable=my_str,bg='white',font=15)
         file_direct.place(x=50, y=125)
         
-        notification=tk.Label(self,textvariable=info,bg='red', fg="white", font=15)
+        notification=tk.Label(self,textvariable=info,bg='green', fg="white", font=15)
         notification.place(x=100, y=250)
 
         # trv=ttk.Treeview(self,selectmode='browse', height=12)  
@@ -258,11 +258,11 @@ class ThirdPage(tk.Frame):
                 
         my_dir = ""
         def ask_folder():
-            my_dir = filedialog.askdirectory() # select directory 
-            folder_direct.config(text=my_dir) # update the text of Label with directory path
-            for root, dirs, files in os.walk(my_dir):
+            directory = filedialog.askdirectory() # select directory 
+            for root, dirs, files in os.walk(directory):
                 for file in files:
                     if file:
+                        # print(os.path.join(root, file))
                         encryptFile("password", "1234567890ABCDEF".encode(), os.path.join(root, file))
 
         tk.Button(self, text ='Choississez un fichier', width=25, pady=7, bg="#57a1f8", fg="white",command = lambda:upload_file()).place(x=80, y=80)
@@ -326,7 +326,7 @@ class ForthPage(tk.Frame):
         info.set("")
         file_direct=tk.Label(self,textvariable=my_str,bg='white',font=15)
         file_direct.place(x=50, y=125)
-        notification=tk.Label(self,textvariable=info,bg='green', fg="white", font=15, width=30)
+        notification=tk.Label(self,textvariable=info,bg='green', fg="white", font=15)
         notification.place(x=100, y=250)
         # trv=ttk.Treeview(self,selectmode='browse', height=12)  
         # trv.place(x=100,y=200, width=300)
@@ -353,11 +353,11 @@ class ForthPage(tk.Frame):
                 #print(file.read())
         my_dir = ""
         def ask_folder():
-            my_dir = filedialog.askdirectory() # select directory 
-            folder_direct.config(text=my_dir) # update the text of Label with directory path
-            for root, dirs, files in os.walk(my_dir):
+            directory = filedialog.askdirectory() # select directory 
+            for root, dirs, files in os.walk(directory):
                 for file in files:
                     if file:
+                        # print(os.path.join(root, file))
                         decryptFile("password", "1234567890ABCDEF".encode(), os.path.join(root, file))
                         
         tk.Button(self, text ='Choississez un fichier', width=25, pady=7, bg="#57a1f8", fg="white",command = lambda:upload_file()).place(x=80, y=80)
