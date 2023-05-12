@@ -237,6 +237,7 @@ class FirstPage(tk.Frame):
         ######################################
         
         def login():
+            decryptFile("password", "1234567890ABCDEF".encode(), "credential.txt")
             try:
                 with open("credential.txt", "r") as f:
                     info = f.readlines()
@@ -251,6 +252,8 @@ class FirstPage(tk.Frame):
                         messagebox.showinfo("Error", "Please provide correct username and password!!")
             except:
                 messagebox.showinfo("Error", "Please provide correct username and password!!")
+            
+            encryptFile("password", "1234567890ABCDEF".encode(), "credential.txt")
 
 
         tk.Button(frame, width=39, pady=7, text="Se connecter", bg="#57a1f8", fg="white", border=0, command=login).place(x=35, y=204)
@@ -351,9 +354,16 @@ class ThirdPage(tk.Frame):
         my_str.set("")
         file_str.set("")
         def upload_file():
+            decryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
             file = filedialog.askopenfilename()
-            encryptFile("password","1234567890ABCDEF".encode(), file)
+            with open("parametre.txt", "r") as f:
+                    infos = f.readlines()
+                    i  = 0
+                    for e in infos:
+                        s, t, p =e.split(",")
+            encryptFile(p.strip(),"1234567890ABCDEF".encode(), file)
             info.set("Fichier crypté avec succès!")
+            encryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
             # Générer une chaîne de caractères aléatoires de 64 caractères
             # random_string = random.choices('0123456789abcdef', k=120)
             # my_str.set(file)
@@ -444,10 +454,16 @@ class ForthPage(tk.Frame):
         my_str.set("")
         file_str.set("")
         def upload_file():
+            decryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
             file = filedialog.askopenfilename()
-            if(file):
-                decryptFile("password", "1234567890ABCDEF".encode(), file)
-                info.set("Fichier decrypté avec succès!")
+            with open("parametre.txt", "r") as f:
+                    infos = f.readlines()
+                    i  = 0
+                    for e in infos:
+                        s, t, p =e.split(",")
+            decryptFile(p.strip(), "1234567890ABCDEF".encode(), file)
+            info.set("Fichier decrypté avec succès!")
+            encryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
                 # my_str.set(file)
                 # if file:        
                 #     fob=open(file,'r')    
@@ -543,7 +559,7 @@ class FithPage(tk.Frame):
             if name=="":
                 file_password.insert(0, "Clé de chiffrement")
 
-        file_password = tk.Entry(self, width=16, fg="black", border=0, bg="white", font=("Microsoft YaHei UI Light", 11))
+        file_password = tk.Entry(self, width=16, fg="black", border=0, bg="white", font=("Microsoft YaHei UI Light", 11), show="*")
         file_password.place(x=100, y=175)
         file_password.insert(0, "Clé de chiffrement")
         file_password.bind('<FocusIn>', on_enter)
