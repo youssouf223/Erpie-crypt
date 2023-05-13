@@ -131,11 +131,11 @@ class FirstPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         tk.Frame.configure(self, bg="white")
-        load = Image.open("login.png")
+        load = Image.open("key.png")
         photo = ImageTk.PhotoImage(load)
         label = tk.Label(self, image=photo, bg="white")
         label.image=photo
-        label.place(x=50,y=50)
+        label.place(x=0,y=0)
         ######## Erpie logo
         erpie_img = Image.open("erie.png")
         erie_resized_image = erpie_img.resize((200, 80))
@@ -230,11 +230,11 @@ class SecondPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         tk.Frame.configure(self, bg="white")
-        load = Image.open("login.png")
+        load = Image.open("key1.png")
         photo = ImageTk.PhotoImage(load)
         label = tk.Label(self, image=photo, bg="white")
         label.image=photo
-        label.place(x=350,y=50)
+        label.place(x=350,y=0)
         ######## Erpie logo
         erpie_img = Image.open("erie.png")
         erie_resized_image = erpie_img.resize((200, 80))
@@ -274,11 +274,11 @@ class ThirdPage(tk.Frame):
         heading = tk.Label(self, text="Cryptage de données", bg="white", font=("Microsoft YaHei UI Light", 15, "bold"))
         heading.place(x=300, y=15)
 
-        load = Image.open("login.png")
+        load = Image.open("key.png")
         photo = ImageTk.PhotoImage(load)
         label = tk.Label(self, image=photo, bg="white")
         label.image=photo
-        label.place(x=400,y=150)
+        label.place(x=300,y=45)
         ######## Erpie logo
         erpie_img = Image.open("erie.png")
         erie_resized_image = erpie_img.resize((200, 80))
@@ -372,11 +372,11 @@ class ForthPage(tk.Frame):
         heading = tk.Label(self, text="Decryptage de données", bg="white", font=("Microsoft YaHei UI Light", 15, "bold"))
         heading.place(x=300, y=15)
 
-        load = Image.open("login.png")
+        load = Image.open("key1.png")
         photo = ImageTk.PhotoImage(load)
         label = tk.Label(self, image=photo, bg="white")
         label.image=photo
-        label.place(x=400,y=150)
+        label.place(x=400,y=100)
         ######## Erpie logo
         erpie_img = Image.open("erie.png")
         erie_resized_image = erpie_img.resize((200, 80))
@@ -467,7 +467,13 @@ class FithPage(tk.Frame):
         heading = tk.Label(self, text="Parametrage", bg="white", font=("Microsoft YaHei UI Light", 15, "bold"))
         heading.place(x=300, y=15)
 
-        load = Image.open("login.png")
+        load_ = Image.open("key1.png")
+        photo_ = ImageTk.PhotoImage(load_)
+        label_ = tk.Label(self, image=photo_, bg="white")
+        label_.image=photo_
+        label_.place(x=10,y=100)
+        
+        load = Image.open("key.png")
         photo = ImageTk.PhotoImage(load)
         label = tk.Label(self, image=photo, bg="white")
         label.image=photo
