@@ -8,12 +8,12 @@ from tkinter import messagebox
 from PIL import Image, ImageTk  # pip install pillow
 from tkinter.filedialog import askopenfile
 from tkinter import filedialog
-from Cryptodome.Cipher import AES, DES
+from Cryptodome.Cipher import AES, DES, ARC2
 from Cryptodome.Util import Padding
 
 ########### AES
-def encryptFileAesSha224(password, IV, filename):
-    key = hashlib.sha224(password.encode()).digest()
+def encryptFileAesSha256(password, IV, filename):
+    key = hashlib.sha256(password.encode()).digest()
 
     with open(filename, 'rb') as f:
         file_data = f.read()
@@ -21,7 +21,7 @@ def encryptFileAesSha224(password, IV, filename):
     starttime = timeit.default_timer()
 
     cipher = AES.new(key, AES.MODE_CBC , IV)
-    padded_file_data = Padding.pad(file_data, 16)
+    padded_file_data = Padding.pad(file_data, 64)
     encrypt_file_data = cipher.encrypt(padded_file_data)
 
     time = timeit.default_timer() - starttime
@@ -30,8 +30,8 @@ def encryptFileAesSha224(password, IV, filename):
         ef.write(encrypt_file_data)
     return 'Done in' + str(time) + 'second(s)'
 
-def decryptFileAesSha224(password, IV, filename):
-    key = hashlib.sha224(password.encode()).digest()
+def decryptFileAesSha256(password, IV, filename):
+    key = hashlib.sha256(password.encode()).digest()
 
     with open(filename, 'rb') as f:
         file_data = f.read()
@@ -39,43 +39,7 @@ def decryptFileAesSha224(password, IV, filename):
     starttime = timeit.default_timer()
 
     cipher = AES.new(key, AES.MODE_CBC , IV)
-    padded_file_data = Padding.unpad(file_data, 16)
-    decrypt_file_data = cipher.decrypt(padded_file_data)
-
-    time = timeit.default_timer() - starttime
-
-    with open(filename, 'wb') as ef:
-        ef.write(decrypt_file_data)
-    return 'Done in' + str(time) + 'second(s)'
-
-def encryptFileAesSha512(password, IV, filename):
-    key = hashlib.sha512(password.encode()).digest()
-
-    with open(filename, 'rb') as f:
-        file_data = f.read()
-
-    starttime = timeit.default_timer()
-
-    cipher = AES.new(key, AES.MODE_CBC , IV)
-    padded_file_data = Padding.pad(file_data, 16)
-    encrypt_file_data = cipher.encrypt(padded_file_data)
-
-    time = timeit.default_timer() - starttime
-
-    with open(filename, 'wb') as ef:
-        ef.write(encrypt_file_data)
-    return 'Done in' + str(time) + 'second(s)'
-
-def decryptFileAesSha512(password, IV, filename):
-    key = hashlib.sha512(password.encode()).digest()
-
-    with open(filename, 'rb') as f:
-        file_data = f.read()
-
-    starttime = timeit.default_timer()
-
-    cipher = AES.new(key, AES.MODE_CBC , IV)
-    padded_file_data = Padding.unpad(file_data, 16)
+    padded_file_data = Padding.unpad(file_data, 64)
     decrypt_file_data = cipher.decrypt(padded_file_data)
 
     time = timeit.default_timer() - starttime
@@ -103,27 +67,31 @@ def encryptFile(password, IV, filename):
     return 'Done in' + str(time) + 'second(s)'
 
 def decryptFile(password, IV, filename):
-    key = hashlib.sha256(password.encode()).digest()
+    try:
+        key = hashlib.sha256(password.encode()).digest()
 
-    with open(filename, 'rb') as f:
-        file_data = f.read()
+        with open(filename, 'rb') as f:
+            file_data = f.read()
 
-    starttime = timeit.default_timer()
+        starttime = timeit.default_timer()
 
-    cipher = AES.new(key, AES.MODE_CBC , IV)
-    decrypt_file_data = cipher.decrypt(file_data)
-    unpadded_file_data = Padding.unpad(decrypt_file_data, 16)
+        cipher = AES.new(key, AES.MODE_CBC , IV)
+        decrypt_file_data = cipher.decrypt(file_data)
+        unpadded_file_data = Padding.unpad(decrypt_file_data, 16)
 
-    time = timeit.default_timer() - starttime
+        time = timeit.default_timer() - starttime
 
-    with open(filename, 'wb') as ef:
-        ef.write(unpadded_file_data)
-    return 'Done in' + str(time) + 'second(s)'
+        with open(filename, 'wb') as ef:
+            ef.write(unpadded_file_data)
+        return 'Done in' + str(time) + 'second(s)'
+    except:
+        encryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
+        messagebox.showinfo("Error", "La clé de cryptage ne correspond pas!!")
 ########### AES
 
 ########### DES
 def encryptFileDesSha256(password, IV, filename):
-    key = hashlib.sha256(password.encode()).digest()
+    key = hashlib.sha256(password.encode("utf-8")).digest()
 
     with open(filename, 'rb') as f:
         file_data = f.read()
@@ -187,7 +155,7 @@ class FirstPage(tk.Frame):
         ######## End of Drapeau logo
         
         ######## Africa digital logo
-        ad_img = Image.open("africa-digital.jpg")
+        ad_img = Image.open("africa-digital.png")
         ad_resized_image = ad_img.resize((100, 100))
         ad_logo = ImageTk.PhotoImage(ad_resized_image)
         label_ad = tk.Label(self, image=ad_logo, bg="white")
@@ -286,7 +254,7 @@ class SecondPage(tk.Frame):
         ######## End of Drapeau logo
         
         ######## Africa digital logo
-        ad_img = Image.open("africa-digital.jpg")
+        ad_img = Image.open("africa-digital.png")
         ad_resized_image = ad_img.resize((100, 100))
         ad_logo = ImageTk.PhotoImage(ad_resized_image)
         label_ad = tk.Label(self, image=ad_logo, bg="white")
@@ -330,7 +298,7 @@ class ThirdPage(tk.Frame):
         ######## End of Drapeau logo
         
         ######## Africa digital logo
-        ad_img = Image.open("africa-digital.jpg")
+        ad_img = Image.open("africa-digital.png")
         ad_resized_image = ad_img.resize((100, 100))
         ad_logo = ImageTk.PhotoImage(ad_resized_image)
         label_ad = tk.Label(self, image=ad_logo, bg="white")
@@ -364,26 +332,22 @@ class ThirdPage(tk.Frame):
             encryptFile(p.strip(),"1234567890ABCDEF".encode(), file)
             info.set("Fichier crypté avec succès!")
             encryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
-            # Générer une chaîne de caractères aléatoires de 64 caractères
-            # random_string = random.choices('0123456789abcdef', k=120)
-            # my_str.set(file)
-            # if file:        
-            #     # fob=open(file,'r')    
-            #     i=0
-            #     for data in random_string:
-            #         trv.insert("",'end',iid=i,text=data)
-            #         i=i+1
-            # else:
-            #     print("Aucun fichier choisi")
-                
         my_dir = ""
         def ask_folder():
             directory = filedialog.askdirectory() # select directory 
+            decryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
+            with open("parametre.txt", "r") as f:
+                    infos = f.readlines()
+                    i  = 0
+                    for e in infos:
+                        s, t, p =e.split(",")
             for root, dirs, files in os.walk(directory):
                 for file in files:
                     if file:
                         # print(os.path.join(root, file))
-                        encryptFile("password", "1234567890ABCDEF".encode(), os.path.join(root, file))
+                        encryptFile(p.strip(), "1234567890ABCDEF".encode(), os.path.join(root, file))
+                        info.set("Dossier crypté avec succès!")
+            encryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
 
         tk.Button(self, text ='Choississez un fichier', width=25, pady=7, bg="#57a1f8", fg="white",command = lambda:upload_file()).place(x=80, y=80)
         tk.Button(self, text ='Choississez un dossier', width=25, pady=7, bg="#57a1f8", fg="white",command = lambda:ask_folder()).place(x=270, y=80)
@@ -432,7 +396,7 @@ class ForthPage(tk.Frame):
         ######## End of Drapeau logo
         
         ######## Africa digital logo
-        ad_img = Image.open("africa-digital.jpg")
+        ad_img = Image.open("africa-digital.png")
         ad_resized_image = ad_img.resize((100, 100))
         ad_logo = ImageTk.PhotoImage(ad_resized_image)
         label_ad = tk.Label(self, image=ad_logo, bg="white")
@@ -464,27 +428,22 @@ class ForthPage(tk.Frame):
             decryptFile(p.strip(), "1234567890ABCDEF".encode(), file)
             info.set("Fichier decrypté avec succès!")
             encryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
-                # my_str.set(file)
-                # if file:        
-                #     fob=open(file,'r')    
-                #     i=0
-                #     for data in fob:
-                #         trv.insert("",'end',iid=i,text=data)
-                #         i=i+1
-                # else:
-                #     print("Aucun fichier choisi")
-                
-                # print(fob.read())
-                #file = filedialog.askopenfile()
-                #print(file.read())
         my_dir = ""
         def ask_folder():
             directory = filedialog.askdirectory() # select directory 
+            decryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
+            with open("parametre.txt", "r") as f:
+                    infos = f.readlines()
+                    i  = 0
+                    for e in infos:
+                        s, t, p =e.split(",")
             for root, dirs, files in os.walk(directory):
                 for file in files:
                     if file:
                         # print(os.path.join(root, file))
-                        decryptFile("password", "1234567890ABCDEF".encode(), os.path.join(root, file))
+                        decryptFile(p.strip(), "1234567890ABCDEF".encode(), os.path.join(root, file))
+                        info.set("Dossier decrypté avec succès!")
+            encryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
                         
         tk.Button(self, text ='Choississez un fichier', width=25, pady=7, bg="#57a1f8", fg="white",command = lambda:upload_file()).place(x=80, y=80)
         tk.Button(self, text ='Choississez un dossier', width=25, pady=7, bg="#57a1f8", fg="white",command = lambda:ask_folder()).place(x=270, y=80)
@@ -505,7 +464,7 @@ class FithPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         tk.Frame.configure(self, bg="white")
         
-        heading = tk.Label(self, text="Decryptage de données", bg="white", font=("Microsoft YaHei UI Light", 15, "bold"))
+        heading = tk.Label(self, text="Parametrage", bg="white", font=("Microsoft YaHei UI Light", 15, "bold"))
         heading.place(x=300, y=15)
 
         load = Image.open("login.png")
@@ -532,7 +491,7 @@ class FithPage(tk.Frame):
         ######## End of Drapeau logo
         
         ######## Africa digital logo
-        ad_img = Image.open("africa-digital.jpg")
+        ad_img = Image.open("africa-digital.png")
         ad_resized_image = ad_img.resize((100, 100))
         ad_logo = ImageTk.PhotoImage(ad_resized_image)
         label_ad = tk.Label(self, image=ad_logo, bg="white")
@@ -568,12 +527,16 @@ class FithPage(tk.Frame):
         tk.Frame(self, width=270, height=2, bg="black").place(x=100, y=195)
 
         def set_setting():
+            decryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
             if type.get()!="" or sha.get()!="" or file_password.get()!="":
+                with open("parametre.txt", "w") as fd:
+                    fd.truncate(0)
                 with open("parametre.txt", "a") as f:
                     f.write(type.get()+","+sha.get()+","+file_password.get()+"\n")
                     messagebox.showinfo("Paramètre validé avec succès!")
             else:
                 messagebox.showinfo("Erreur", "Svp veuillez renseigner tous les champs!")
+            encryptFile("password", "1234567890ABCDEF".encode(), "parametre.txt")
 
         tk.Button(self, text ='Valider', width=25, pady=7, padx=7, bg="#57a1f8", fg="white", command=set_setting).place(x=125, y=250)
 
