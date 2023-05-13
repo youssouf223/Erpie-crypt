@@ -506,13 +506,13 @@ class FithPage(tk.Frame):
         ######## End of Africa digital logo
     
         # Create a Combobox for Type
-        values = ['AES', 'DES', 'SCS']
+        values = ['AES', 'DES', 'Blowfish']
         sha = ttk.Combobox(self, values=values, width=42)
         sha.place(x=100, y=85)
         tk.Frame(self, width=270, height=2, bg="black").place(x=100, y=105)
 
         # Create a Combobox for Sha
-        values = ['Sha-256', 'Sha-125', 'Sha-254']
+        values = ['SHA-1', 'SHA-256', 'SHA-512']
         type = ttk.Combobox(self, values=values, width=42)
         type.place(x=100, y=125)
         tk.Frame(self, width=270, height=2, bg="black").place(x=100, y=145)
